@@ -1,0 +1,50 @@
+﻿@model TiemTra.Models.Staff
+
+@{
+    ViewBag.Title = "ThemNV";
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Thêm nhân viên</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Thêm nhân viên
+        </div>
+        <form method="post" action="ThemNV">
+
+            <div class="field">
+                <input type="text" name="TenNV">
+                <label>Tên nhân viên</label>
+            </div>
+            <div class="field">
+                <input type="text" name="Email">
+                <label>Email</label>
+            </div>
+            <div class="field">
+                <input type="text" name="Sdt">
+                <label>PhoneNumber</label>
+            </div>
+            <div class="field">
+                <input type="date" name="NgaySinh">
+                <label>Ngày Sinh</label>
+            </div>
+
+
+
+            <div class="field">
+                <input type="submit" value="Thêm">
+            </div>
+            <div class="signup-link">
+                <a href="/NhanVien/AllNhanVien">Quay về</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

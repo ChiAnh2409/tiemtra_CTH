@@ -1,0 +1,42 @@
+﻿@model TiemTra.ViewModel.MutipleData
+
+@{
+    ViewBag.Title = "ThemTK";
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tạo tài khoản</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Tạo tài khoản
+        </div>
+        <form method="post" action="ThemTK">
+            <label>Email</label>
+            <select id="disease-list" name="Email">
+                @foreach (var item in Model.Staff)
+                {
+                    <option value="@item.IdStaff">@item.Email</option>
+                }
+            </select>
+            <div class="field">
+                <input type="password" name="Pass">
+                <label>Password</label>
+            </div>
+            
+            <div class="field">
+                <input type="submit" value="Tạo">
+            </div>
+            <div class="signup-link">
+                <a href="/TKNV/TKNV">Quay về</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

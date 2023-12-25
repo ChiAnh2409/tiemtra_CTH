@@ -1,0 +1,51 @@
+﻿@model TiemTra.ViewModel.MutipleData
+@{
+    ViewBag.Title = "SuaTK";
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sửa tài khoản</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Sửa tài khoản
+        </div>
+        <form method="post" action="SuaTK">
+
+            @foreach (var item in Model.Accounts)
+            {
+                <div class="field">
+                    <input type="text" name="IdTU" value="@item.IdAccount" readonly>
+                </div>
+                <label>Email</label>
+                <select id="disease-list" name="Email">
+                    @foreach (var item2 in Model.Staff)
+                    {
+                        <option value="@item2.IdStaff" @(item2.IdStaff == item.IdStaff ? "selected" : "")>@item2.Email</option>
+                    }
+
+                </select>
+                <div class="field">
+                    <input type="password" name="Pass" value="@item.Pass">
+                    <label>Password</label>
+                </div>
+
+                
+
+                <div class="field">
+                    <input type="submit" value="Sửa">
+                </div>
+                <div class="signup-link">
+                    <a href="/TKNV/TKNV">Quay về trang chủ</a>
+                </div>
+            }
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+﻿@model TiemTra.Models.Size
+@{
+    ViewBag.Title = "SuaSize";
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sửa Size Thức Uống</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Sửa Size Thức Uống
+        </div>
+        <form method="post" action="SuaSize">
+            <div class="field">
+                <input type="text" name="IdSize" value="@Model.IdSize" readonly>
+
+            </div>
+
+            <div class="field">
+                <input type="text" name="Size1" value="@Model.Size1">
+                <label>Size</label>
+            </div>
+
+
+            <div class="field">
+                <input type="submit" value="Sửa">
+            </div>
+            <div class="signup-link">
+                <a href="/Size/Size">Quay về</a>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

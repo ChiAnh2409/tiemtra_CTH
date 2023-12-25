@@ -1,0 +1,305 @@
+﻿@model IEnumerable<TiemTra.Models.ChiTietBill>
+@{
+
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="~/css/style.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <script src="~/js/thongtin.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="~/css/cart.css" rel="stylesheet" />
+   <style>
+       .quantity-input {
+           width: 60px; /* Điều chỉnh kích thước ô nhập số lượng theo ý muốn */
+           padding: 6px;
+           border: 1px solid #ccc;
+           border-radius: 4px;
+           box-sizing: border-box;
+           /* Thêm các thuộc tính CSS khác nếu cần */
+       }
+   </style>
+</head>
+
+
+<body>
+    
+    <div class="container">
+        <div class="menu">
+            <div class="logo">
+                Tiệm Trà<br /><span>Tháng Chín</span>
+            </div>
+            <ul>
+                <li class="active">
+                    <a href="/TrangChu/Index">
+                        <i class="fa-solid fa-house-user"></i> Home
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="/Cart/Cart">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        Giỏ hàng
+                    </a>
+                </li>
+
+            </ul>
+            <ul>
+                <li>
+                    <a href="/Account/DangNhap">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Đăng nhập
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+        <div class="center">
+            <div class="search">
+                <div class="form">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search..." id="Search">
+                    <button type="button">Search</button>
+                </div>
+
+            </div>
+            <div class="container-xl" style="max-width: 2000px">
+                <div class="table-responsive">
+                    <div class="table-wrapper">
+                        <div class="table-title">
+                            <div class="row">
+
+                            </div>
+                        </div>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Mã thức uống</th>
+                                    <th>Tên Thức Uống</th>
+                                    <th>Size</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá</th>
+                                    <th>Thành tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="cart-items"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-xl" style="max-width: 2000px; text-align: center;">
+                <div style="font-size: 22px;">Tổng tiền: <span id="totalPrice"></span></div>
+                <button onclick="proceedToPayment()" style=" background: lightpink; border: none; height: 30px; border-radius: 15px; font-size: 16px;cursor:pointer;">Đăng kí thông tin thanh toán</button>
+            </div>
+
+        </div>
+       
+    </div>
+
+
+
+    <script>
+        function displayCartItems() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            console.log(cart)
+            const tableBody = document.querySelector('.cart-items');
+            tableBody.innerHTML = ''; // Clear the table body
+
+            if (cart.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = '<td colspan="9">Your cart is empty</td>';
+                tableBody.appendChild(emptyRow);
+                return;
+            }
+
+
+            let itemCount = 1;
+            cart.forEach(item => {
+                item.sizes.forEach(sizeItem => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                <td>${itemCount}</td>
+                <td><img src="${item.image}" alt="Product Image"></td>
+                <td>${sizeItem.idTU}</td>
+                <td>${item.name}</td>
+                <td>${sizeItem.size}</td>
+                <td><input class="quantity-input" type="number" value="${sizeItem.quantity}" min="1" onchange="updateQuantity('${item.id}', '${sizeItem.size}', this.value)"></td>
+                <td>${sizeItem.price}</td>
+                <td>${sizeItem.quantity * sizeItem.price}</td>
+                <td><button onclick="removeItem('${item.id}', '${sizeItem.size}')">Remove</button></td>
+            `;
+                    tableBody.appendChild(row);
+                    itemCount++;
+                });
+            });
+        }
+
+        function updateQuantity(productId, size, newQuantity) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Tìm sản phẩm trong giỏ hàng để cập nhật số lượng
+            for (let i = 0; i < cart.length; i++) {
+                const item = cart[i];
+                if (item.id === productId) {
+                    const sizeIndex = item.sizes.findIndex(s => s.size === size);
+                    if (sizeIndex !== -1) {
+                        cart[i].sizes[sizeIndex].quantity = parseInt(newQuantity, 10);
+                        break;
+                    }
+                }
+            }
+
+            // Lưu lại giỏ hàng đã cập nhật vào localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Sau khi cập nhật số lượng, cập nhật tổng tiền
+            updateTotalPrice();
+
+            // Sau đó, gọi lại hàm displayCartItems() để cập nhật lại giao diện
+            displayCartItems();
+        }
+
+
+
+        function formatCurrency(number) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+        }
+
+
+
+        function calculateTotalPrice() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalPrice = 0;
+
+            cart.forEach(item => {
+                item.sizes.forEach(sizeItem => {
+                    totalPrice += sizeItem.quantity * sizeItem.price;
+                });
+            });
+
+            return formatCurrency(totalPrice);
+        }
+        // Cập nhật tổng tiền vào phần tử HTML
+        document.getElementById('totalPrice').textContent = calculateTotalPrice();
+
+        function updateTotalPrice() {
+            const totalPriceElement = document.getElementById('totalPrice');
+            totalPriceElement.textContent = calculateTotalPrice();
+        }
+
+
+        function removeItem(productId, size) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Filter the cart based on ID and size
+            cart = cart.filter(item => {
+                // Check if the ID matches
+                if (item.id === productId) {
+                    // Check each size item in the sizes array
+                    item.sizes = item.sizes.filter(sizeItem => sizeItem.size !== size);
+                    return item.sizes.length > 0; // Keep the item if there are sizes remaining
+                }
+                return true; // Keep items with different IDs
+            });
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCartItems();
+            updateTotalPrice();
+
+        }
+        proceedToPayment
+        window.onload = function () {
+            displayCartItems();
+            updateTotalPrice();
+        }
+
+        //function proceedToPayment() {
+        //    window.location.href = '/Trangchu/Thongtin';
+        //}
+        function proceedToPayment() {
+            // Lấy thông tin giỏ hàng từ localStorage
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+
+            // Lưu thông tin giỏ hàng vào sessionStorage để sử dụng ở trang mới
+            //sessionStorage.setItem('cartData', JSON.stringify(cart));
+
+            // Chuyển hướng đến trang ThongTin
+            window.location.href = '/TrangChu/ThongTin';
+        }
+
+
+
+
+    </script>
+
+
+    <script>
+        function proceedToPayment() {
+            const cartItems = document.querySelectorAll('.cart-items tr');
+
+            const data = [];
+
+            cartItems.forEach(row => {
+                const columns = row.querySelectorAll('td');
+
+                const item = {
+                    IdTU: columns[2].textContent, // Id
+                    Size: columns[4].textContent, // Size
+                    SoLuong: columns[5].querySelector('.quantity-input').value, // Quantity
+                    ThanhTien: columns[7].textContent // Total price
+                };
+
+                data.push(item);
+            });
+
+            // Now you have an array 'data' containing the information from the table rows.
+            // Send 'data' to the server using AJAX to insert into the ChiTietBill table.
+
+            // Example AJAX call:
+            $.ajax({
+                type: 'POST',
+                url: '/Cart/SaveChiTietBill', // Replace this with your server endpoint
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.success) {        
+                        // Nếu giỏ hàng không trống
+                        
+                            localStorage.removeItem('cart');
+                        
+                        window.location.href = '/TrangChu/ThongTin';
+                    } else {
+                        
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+    </script>
+
+</body>
+</html>

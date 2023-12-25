@@ -1,0 +1,36 @@
+﻿@model TiemTra.Models.NguyenLieu
+
+@{
+    ViewBag.Title = "Them";
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Thêm nguyên liệu</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Thêm nguyên liệu
+        </div>
+        <form method="post" action="ThemNL">
+            
+            <div class="field">
+                <input type="text" name="TenNL">
+                <label>Tên nguyên liệu</label>
+            </div>
+
+            <div class="field">
+                <input type="submit" value="Thêm">
+            </div>
+            <div class="signup-link">
+                <a href="/NguyenLieu/NguyenLieu">Quay về</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

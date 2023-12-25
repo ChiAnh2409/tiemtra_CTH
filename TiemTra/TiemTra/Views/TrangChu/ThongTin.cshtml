@@ -1,0 +1,75 @@
+﻿@model TiemTra.Models.Customer
+@{
+    ViewBag.Title = "ThongTin";
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Nhập thông tin</title>
+
+    <link href="~/css/thongtin.css" rel="stylesheet" />
+</head>
+<body style="background:lightpink;">
+    <div class="wrapper">
+        <form id="checkoutForm" method="post" action="LuuBill">
+            <div id="customerInfo">
+                <h2>Thông tin Khách hàng</h2>
+
+                <label for="tenKH">Tên Khách hàng:</label>
+                <input type="text" id="TenKH" name="TenKH" required><br>
+
+                <label for="sdt">Số điện thoại:</label>
+                <input type="tel" id="Sdt" name="Sdt" required><br>
+
+                <label for="diaChi">Địa chỉ:</label>
+                <input type="text" id="DiaChi" name="DiaChi" required><br>
+
+                <label for="email">Email:</label>
+                <input type="email" id="Email" name="Email" required><br>
+
+                <label for="email">Ghi chú:</label>
+                <input type="text" id="GhiChu" name="GhiChu"><br>
+                <input type="submit" value="Thanh toán">
+
+            </div>
+            <div class="signup-link">
+                <a href="/Cart/Cart">Quay về</a>
+            </div>
+        </form>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+    $(document).ready(function () {
+        $('#checkoutForm').submit(function (event) {
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+
+            var formData = $(this).serialize(); // Lấy dữ liệu từ form
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("LuuBill", "TrangChu")",
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        window.location.href = "/TrangChu/Index";
+
+                        // Nếu thành công, thực hiện các hành động khác
+                    } else {
+                        alert("Phương thức không thành công.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+        </script>
+
+
+    </div>
+</body>
+</html>
+

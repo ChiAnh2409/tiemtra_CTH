@@ -1,0 +1,244 @@
+﻿@model TiemTra.ViewModel.MutipleData
+@{
+
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="~/css/style.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <script src="~/js/thongtin.js"></script>
+
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="menu">
+            <div class="logo">
+                Tiệm Trà<br /><span>Tháng Chín</span>
+            </div>
+            <ul>
+                <li class="active">
+                    <a href="/TrangChu/Index">
+                        <i class="fa-solid fa-house-user"></i> Home
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="/Cart/Cart">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        Giỏ hàng
+                        <span id="cartItemCount"></span>
+                    </a>
+                    </li>
+
+            </ul>
+            <ul>
+                <li>
+                    <a href="/Account/DangNhap">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Đăng nhập
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+        <div class="center">
+            <div class="search">
+                <div class="form">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search..." id="Search">
+                    <button type="button">Search</button>
+                </div>
+
+            </div>
+
+
+            <div class="list">
+                @foreach (var drink in Model.thucUongs.GroupBy(t => t.TenTU))
+                {
+                    <div class="item" data-key="@drink.First().IdTU" data-size="@drink.First().Size.Size1">
+                        <div class="img">
+                            <img src="~/img/@drink.First().Image" />
+                        </div>
+                        <div class="content" style="margin:auto">
+                            <div class="title">@drink.First().TenTU</div>
+                            <div class="des">
+                                <div class="sizes">
+                                    @foreach (var sizeInfo in drink)
+                                    {
+                                        <label>
+                                            <input type="radio" name="size_@drink.First().TenTU" value="@sizeInfo.IdSize" data-price="@sizeInfo.Gia" data-image="@sizeInfo.Image" data-size="@sizeInfo.Size.Size1" data-idtu="@sizeInfo.IdTU"/>
+                                            @sizeInfo.Size.Size1 - @sizeInfo.Gia <br>
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                            <input type="number" id="quantityInput" class="count" min="1" value="1">
+                            <form class="add-to-cart-form" action="@Url.Action("AddToCart", "Cart")" method="post">
+                                <input type="hidden" name="productId" value="@drink.First().IdTU" />
+                                <input type="hidden" name="selectedSize" value="@drink.First().Size" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="button" class="add" onclick="addToCart(this)">Add to cart</button>
+                            </form>
+                            <button class="remove"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <script>
+                function addToCart(button) {
+                   
+                    const productDiv = button.closest('.item');
+                    const productId = productDiv.getAttribute('data-key');
+                    const productName = productDiv.querySelector('.title').textContent;
+                    const productImage = productDiv.querySelector('img').getAttribute('src');
+
+                    const selectedSizes = productDiv.querySelectorAll('input[type="radio"]:checked');
+                    const quantities = Array.from(productDiv.querySelectorAll('.count')).map(input => parseInt(input.value));
+
+                    if (selectedSizes.length === 0) {
+                        alert('Chọn size thức uống trước khi thêm vào giỏ hàng');
+                        return;
+                    }
+
+                    const cartItem = {
+                        id: productId,
+                        name: productName,
+                        image: productImage,
+                        sizes: []
+                    };
+
+                    selectedSizes.forEach((sizeInput, index) => {
+                        const size = sizeInput.getAttribute('data-size');
+                        const price = parseFloat(sizeInput.getAttribute('data-price'));
+                        const quantity = quantities[index];
+                        const idTU = sizeInput.getAttribute('data-idtu'); // Lấy IdTU của kích thước được chọn
+
+                        cartItem.sizes.push({ idTU, size, price, quantity }); // Bao gồm idTU trong cartItem
+                    });
+
+                    console.log(cartItem)
+                    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    console.log(cart)
+                    const existingItemIndex = cart.findIndex(item => item.id == productId);
+
+                    if (existingItemIndex !== -1) {
+                        // If the item already exists in the cart, merge sizes or add new sizes
+                        cart[existingItemIndex].sizes = mergeSizes(cart[existingItemIndex].sizes, cartItem.sizes);
+                    } else {
+                        // Otherwise, add the new item to the cart
+                        cart.push(cartItem);
+                    }
+
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    alert('Thêm vào giỏ hàng thành công!');
+                    updateCartItemCount();
+                }
+
+                // Function to merge sizes for an existing product in the cart
+                function mergeSizes(existingSizes, newSizes) {
+                    newSizes.forEach(newSize => {
+                        const existingSizeIndex = existingSizes.findIndex(size => size.size === newSize.size);
+
+                        if (existingSizeIndex !== -1) {
+                            existingSizes[existingSizeIndex].quantity += newSize.quantity;
+                        } else {
+                            existingSizes.push(newSize);
+                        }
+                    });
+
+                    return existingSizes;
+                }
+
+
+                // Function to update the cart count display
+                function updateCartItemCount() {
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    let totalCount = 0;
+
+                    // Calculate the total count of items in the cart
+                    cart.forEach(item => {
+                        item.sizes.forEach(size => {
+                            totalCount += size.quantity;
+                        });
+                    });
+
+                    // Display the count in the HTML element
+                    document.getElementById('cartItemCount').innerText = totalCount;
+                }
+                // Xử lý sự kiện khi người dùng nhấn nút "Add to cart"
+                //$('.add').click(function (e) {
+                //    e.preventDefault();
+                //    var form = $(this).closest('.content').find('.add-to-cart-form');
+                //    var selectedSize = form.find('input[name="selectedSize"]').val();
+                //    var quantity = form.find('input[name="quantity"]').val();
+
+                //    // Kiểm tra xem selectedSize và quantity có giá trị hợp lệ không
+                //    if (selectedSize && quantity && !isNaN(quantity) && parseInt(quantity) > 0) {
+                //        form.find('input[name="selectedSize"]').val(selectedSize);
+                //        form.find('input[name="quantity"]').val(quantity);
+
+                //        form.submit();
+                //    } else {
+                //        // Hiển thị thông báo hoặc thực hiện xử lý khác tùy thuộc vào yêu cầu của bạn
+                //        alert('Vui lòng chọn size và nhập số lượng hợp lệ.');
+                //    }
+                //});
+            </script>
+
+
+
+            <script>
+                // Xử lý sự kiện chọn size để cập nhật giá
+                $('input[type=radio]').on('change', function () {
+                    var selectedSize = $(this).val();
+                    var price = $(this).data('price');
+                    $(this).closest('.item').find('.price').text(price);
+                });
+            </script>
+
+        </div>
+      
+    </div>
+
+
+
+    <script>
+        $(document).ready(function () {
+            function Contains(text_one, text_two) {
+                return text_one.toLowerCase().indexOf(text_two.toLowerCase()) !== -1;
+            }
+
+            $("#Search").keyup(function () {
+                var searchText = $("#Search").val().toLowerCase();
+                $(".item").each(function () {
+                    var title = $(this).find(".title").text().toLowerCase();
+                    if (!Contains(title, searchText)) {
+                        $(this).hide();
+                    } else {
+                        $(this).show();
+                    }
+                });
+
+
+            });
+        });
+
+    </script>
+
+</body>
+</html>

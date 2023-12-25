@@ -1,0 +1,59 @@
+﻿
+@model TiemTra.ViewModel.MutipleData
+@{
+    ViewBag.Title = "SuaCT";
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sửa chi tiết công thức</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Sửa công thức
+        </div>
+        <form method="post" action="SuaCT">
+            @foreach (var item in Model.congThucs)
+            {
+                <div class="field" style="display:none">
+                    Mã Công Thức
+                    <input type="text" name="IdNLTU" value="@item.IdNLTU" readonly>
+                </div>
+                <div class="field" style="display:none">
+                    Mã Thức Uống
+                    <input type="text" name="IdTU" value="@item.IdTU" readonly>
+                </div>
+                <br />
+                <label>Tên nguyên liệu</label>
+                <select id="disease-list" name="IdNL" style=" MARGIN-BOTTOM: 20PX; margin-top: 20PX;">
+                    @foreach (var item2 in Model.nguyenLieus)
+                    {
+                        <option value="@item2.IdNgL" @(item2.IdNgL == item.IdNL ? "selected" : "")>@item2.TenNL</option>
+                    }
+                </select>
+
+                <div class="field">
+                    <input type="text" name="SoLuong" value="@item.SoLuong">
+                    <label>Số lượng</label>
+                </div>
+                <div class="field">
+                    <input type="text" name="DonVi" value="@item.DonVi">
+                    <label>Đơn Vị</label>
+                </div>
+
+                <div class="field">
+                    <input type="submit" value="Sửa">
+                </div>
+                <div class="signup-link">
+                    <a href="/CongThuc/CongThuc/@item.IdTU">Quay về</a>
+                </div>
+            }
+        </form>
+    </div>
+</body>
+</html>
+

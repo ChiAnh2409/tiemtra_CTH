@@ -1,0 +1,205 @@
+﻿@model TiemTra.ViewModel.MutipleData
+@{
+    ViewBag.Title = "ThemCTPN";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        #productTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            #productTable th, #productTable td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+            #productTable th {
+                background-color: #f2f2f2;
+            }
+
+            #productTable input[type="text"], #productTable select {
+                width: 100%;
+                padding: 5px;
+            }
+
+        #addRowBtn, #submitBtn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        #addRowBtn {
+            background-color: #008CBA;
+        }
+
+            #addRowBtn:hover, #submitBtn:hover {
+                background-color: #45a049;
+            }
+    </style>
+</head>
+<body>
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>Lô Hàng</th>
+                <th>Nguyên Liệu</th>
+                <th>Nhà Cung Cấp</th>
+                <th>Hạn Sử Dụng</th>
+                <th>Số Lượng</th>
+                <th>Giá Nhập</th>
+                <th>Thành Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" name="LoHang"></td>
+
+                <td>
+                    <select name="IdNgL">
+                        @foreach (var item in Model.nguyenLieus)
+                        {
+                            <option value="@item.IdNgL">@item.TenNL</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <select name="IdNhaCC">
+                        @foreach (var item in Model.nhaCungCap)
+                        {
+                            <option value="@item.IdNhaCC">@item.TenNhaCC</option>
+                        }
+                    </select>
+                </td>
+                <td><input type="date" name="HanSuDung"></td>
+                <td><input type="text" name="SoLuong" onchange="calculateTotal(this)"></td>
+                <td><input type="text" name="GiaNhap" onchange="calculateTotal(this)"></td>
+                <td><input type="text" name="ThanhTien" readonly></td>
+            </tr>
+        </tbody>
+    </table>
+    <button id="addRowBtn" onclick="addRow()">Thêm Nguyên Liệu</button>
+    <button id="submitBtn" onclick="submitProducts()">Tạo Đơn Hàng</button>
+
+    <script type="text/javascript">
+        function calculateTotal(input) {
+            var row = input.parentNode.parentNode;
+            var quantity = parseFloat(row.querySelector('[name="SoLuong"]').value);
+            var price = parseFloat(row.querySelector('[name="GiaNhap"]').value);
+            var total = quantity * price;
+            row.querySelector('[name="ThanhTien"]').value = isNaN(total) ? '' : total;
+        }
+
+        function addRow() {
+            var table = document.getElementById("productTable");
+            var newRow = table.insertRow(-1);
+
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+            var cell6 = newRow.insertCell(5);
+            var cell7 = newRow.insertCell(6);
+
+            cell1.innerHTML = '<input type="text" name="LoHang">';
+
+            cell2.innerHTML = '<select name="IdNL">@foreach (var item in Model.nguyenLieus){<option value="@item.IdNgL">@item.TenNL</option>}</select>';
+            cell3.innerHTML = '<select name="IdNhaCC">@foreach (var item in Model.nhaCungCap){<option value="@item.IdNhaCC">@item.TenNhaCC</option>}</select>';
+            cell4.innerHTML = '<input type="date" name="HanSuDung">';
+            cell5.innerHTML = '<input type="text" name="SoLuong" onchange="calculateTotal(this)">';
+            cell6.innerHTML = '<input type="text" name="GiaNhap" onchange="calculateTotal(this)">';
+            cell7.innerHTML = '<input type="text" name="ThanhTien" readonly>';
+        }
+
+        function submitProducts() {
+    var listctpn = [];
+    var table = document.getElementById("productTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+    for (var i = 0; i < table.length; i++) {
+        var row = table[i];
+        var cells = row.getElementsByTagName("td");
+        var LoHang = cells[0].getElementsByTagName("input")[0].value;
+        var IdNL = cells[1].getElementsByTagName("select")[0].value;
+        var IdNhaCC = cells[2].getElementsByTagName("select")[0].value;
+        var HanSuDung = cells[3].getElementsByTagName("input")[0].value;
+        var SoLuong = cells[4].getElementsByTagName("input")[0].value;
+        var GiaNhap = cells[5].getElementsByTagName("input")[0].value;
+        var ThanhTien = cells[6].getElementsByTagName("input")[0].value;
+
+        var currentURL = window.location.href;
+        var parts = currentURL.split('/');
+        var id = parts[parts.length - 1];
+
+        listctpn.push({
+            "LoHang": LoHang,
+            "IdNL": IdNL,
+            "IdNhaCC": IdNhaCC,
+            "IdPN": id,
+            "HanSuDung": HanSuDung,
+            "SoLuong": SoLuong,
+            "GiaNhap": GiaNhap,
+            "ThanhTien": ThanhTien
+        });
+    }
+
+    console.log(listctpn); // Thử in ra dữ liệu này xem nó trả về gì
+
+    // Gọi AJAX POST request để gửi dữ liệu đến server
+    $.ajax({
+        type: "POST",
+        url: "@Url.Action("ThemCTPN", "CTPN")",
+        contentType: "application/json",
+        data: JSON.stringify(listctpn),
+        success: function (response) {
+            if (response.success) {
+                alert(response.message);
+                // Nếu thành công, chuyển hướng đến trang /PhieuNhap/PhieuNhap
+                window.location.href = "/PhieuNhap/PhieuNhap";
+            } else {
+                alert("Phương thức không thành công.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+        }
+
+        $.ajax({
+            // Các cài đặt AJAX khác ở đây...
+            success: function (response) {
+                if (response.success) {
+                    // Nếu thành công, chuyển hướng đến trang cần
+                    window.location.href = response.redirectUrl;
+                } else {
+                    // Xử lý trường hợp không thành công nếu cần
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

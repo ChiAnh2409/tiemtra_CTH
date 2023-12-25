@@ -1,0 +1,76 @@
+﻿@model Tuple<List<TiemTra.Controllers.ExportController.BillStatistic>, List<TiemTra.Controllers.ExportController.PNStatistic>>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Report</title>
+    <style>
+        /* CSS styles here for better appearance in the PDF */
+        h1 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Doanh Thu</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tháng</th>
+                <th>Năm</th>
+                <th>Doanh Thu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stat in Model.Item1)
+            {
+                <tr>
+                    <td>@stat.Thang</td>
+                    <td>@stat.Nam</td>
+                    <td>@stat.TongTienThang</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h1>Chi Tiêu</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tháng</th>
+                <th>Năm</th>
+                <th>Chi Tiêu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stat in Model.Item2)
+            {
+                <tr>
+                    <td>@stat.Thang</td>
+                    <td>@stat.Nam</td>
+                    <td>@stat.TongTienThang</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

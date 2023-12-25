@@ -1,0 +1,115 @@
+﻿/* Định dạng tiêu đề của bảng */
+.table th {
+    background-color: #f8f9fa; /* Màu nền */
+    font-weight: bold; /* Chữ đậm */
+    text-align: center; /* Căn giữa văn bản */
+    border: none; /* Loại bỏ đường viền */
+    padding: 20px; /* Khoảng cách từ nội dung đến viền */
+    width: 1254px;
+}
+
+/* Định dạng hàng chẵn của bảng */
+.table-striped tbody tr:nth-child(even) {
+    background-color: #f8f9fa; /* Màu nền */
+}
+
+/* Hiệu ứng khi di chuột qua hàng */
+.table-hover tbody tr:hover {
+    background-color: #f2f2f2; /* Màu nền khi di chuột qua */
+}
+
+/* Định dạng nút hoặc liên kết */
+.btn-delete a {
+    color: red; /* Màu chữ của nút xóa */
+    text-decoration: none; /* Bỏ gạch chân dưới chữ */
+}
+
+    .btn-delete a:hover {
+        text-decoration: underline; /* Gạch chân dưới chữ khi di chuột qua */
+    }
+
+/* Định dạng cột liên kết và nút */
+td {
+    text-align: center; /* Căn giữa nội dung trong cột */
+    vertical-align: middle; /* Căn giữa theo chiều dọc */
+    padding: 20px; /* Khoảng cách từ nội dung đến viền */
+}
+
+/* Tạo khoảng cách giữa các hàng */
+.table td,
+.table th {
+    border: none; /* Loại bỏ đường viền */
+}
+
+    /* Loại bỏ padding cho cột hình ảnh */
+    .table td img {
+        width: 80px; /* Tăng kích thước hình ảnh */
+        height: 80px; /* Tăng kích thước hình ảnh */
+        margin: 0; /* Loại bỏ margin */
+        padding: 0; /* Loại bỏ padding */
+    }
+
+/* Tùy chỉnh kích thước bảng để phù hợp với màn hình */
+.container-xl {
+    max-width: 100%; /* Kích thước tối đa là 100% của màn hình */
+    padding: 20px; /* Khoảng cách từ nội dung đến viền */
+}
+
+.table-responsive {
+    overflow-x: auto; /* Cho phép cuộn ngang nếu bảng quá rộng */
+}
+/* Định dạng nút Sửa */
+.btn-sua a {
+    background-color: #28a745; /* Màu nền */
+    color: #fff; /* Màu chữ */
+    padding: 8px 12px; /* Kích thước padding */
+    border-radius: 4px; /* Bo tròn góc */
+    text-decoration: none; /* Bỏ gạch chân dưới chữ */
+}
+
+    .btn-sua a:hover {
+        background-color: #218838; /* Màu nền hover */
+        color: #fff; /* Màu chữ hover */
+    }
+
+/* Định dạng nút Thêm Công Thức */
+.btn-them a {
+    background-color: #007bff; /* Màu nền */
+    color: #fff; /* Màu chữ */
+    padding: 8px 12px; /* Kích thước padding */
+    border-radius: 4px; /* Bo tròn góc */
+    text-decoration: none; /* Bỏ gạch chân dưới chữ */
+}
+
+    .btn-them a:hover {
+        background-color: #0056b3; /* Màu nền hover */
+        color: #fff; /* Màu chữ hover */
+    }
+
+/* Định dạng nút Xem Công Thức */
+.btn-xem a {
+    background-color: #ffc107; /* Màu nền */
+    color: #fff; /* Màu chữ */
+    padding: 8px 12px; /* Kích thước padding */
+    border-radius: 4px; /* Bo tròn góc */
+    text-decoration: none; /* Bỏ gạch chân dưới chữ */
+}
+
+    .btn-xem a:hover {
+        background-color: #d39e00; /* Màu nền hover */
+        color: #fff; /* Màu chữ hover */
+    }
+
+/* Định dạng nút Xóa */
+.btn-xoa a {
+    background-color: #dc3545; /* Màu nền */
+    color: #fff; /* Màu chữ */
+    padding: 8px 12px; /* Kích thước padding */
+    border-radius: 4px; /* Bo tròn góc */
+    text-decoration: none; /* Bỏ gạch chân dưới chữ */
+}
+
+    .btn-xoa a:hover {
+        background-color: #c82333; /* Màu nền hover */
+        color: #fff; /* Màu chữ hover */
+    }

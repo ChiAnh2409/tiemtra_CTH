@@ -1,0 +1,72 @@
+﻿@model TiemTra.ViewModel.MutipleData
+
+@{
+    ViewBag.Title = "ThemTU";
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Thêm thức uống</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Thêm thức uống
+        </div>
+        <form method="post" action="ThemTU" enctype="multipart/form-data">
+            <div class="field">
+                <input type="text" name="TenTU">
+                <label>Tên Thức Uống</label>
+            </div>
+            <br />
+            <div>
+                <label>Loại Thức Uống</label>
+                <select id="disease-list" name="IdLoai" style="font-size: 20px;">
+                    @foreach (var item in Model.loaiThucUongs)
+                    {
+                        <option value="@item.IdLoai">@item.TenLoai</option>
+                    }
+                </select>
+            </div>
+            <br />
+            <div>
+                <label>Size Thức Uống</label>
+                
+                <select id="disease-list" name="IdSize" style="font-size: 20px;">
+
+                    @foreach (var item in Model.sizes)
+                    {
+                        <option value="@item.IdSize">@item.Size1</option>
+                    }
+                </select>
+            </div>
+            <div class="field">
+                <input type="text" name="Gia">
+                <label>Giá Thành</label>
+            </div>
+            <div class="field">
+                <input type="date" name="Date_update">
+                <label>Ngày Cập Nhật</label>
+            </div>
+            <br />
+            <div class="field-image" style=" text-align: center; border: solid cornflowerblue; border-radius: 25px; ">
+                <label>Hình ảnh minh họa</label>
+                <input type="file" name="Image" style="margin-left: 60px;">
+
+            </div>
+            
+
+            <div class="field">
+                <input type="submit" value="Thêm">
+            </div>
+            <div class="signup-link">
+                <a href="/Menu/Menu">Quay về</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

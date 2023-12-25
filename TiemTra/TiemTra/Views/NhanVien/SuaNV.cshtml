@@ -1,0 +1,59 @@
+﻿@model TiemTra.Models.Staff
+@{
+    ViewBag.Title = "SuaNV";
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sửa nhân viên</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Sửa thông tin nhân viên
+        </div>
+        <form method="post" action="SuaNV">
+
+            <div class="field">
+                <input type="text" name="IdStaff" value="@Model.IdStaff" readonly>
+            </div>
+            <div class="field">
+                <input type="text" name="TenNV" value="@Model.TenNV">
+                <label>Tên Nhân Viên</label>
+            </div>
+            <div class="field">
+                <input type="text" name="Email" value="@Model.Email">
+                <label>Email</label>
+            </div>
+            <div class="field">
+                <input type="text" name="Sdt" value="@Model.Sdt">
+                <label>PhoneNumber</label>
+            </div>
+            <div class="field">
+                @if (Model.NgaySinh.HasValue)
+                {
+                    <input type="date" name="NgaySinh" value="@Model.NgaySinh.Value.ToString("yyyy-MM-dd")" />
+                }
+                else
+                {
+                    <input type="date" name="NgaySinh" />
+                }
+                <label>Ngày Sinh</label>
+            </div>
+
+
+
+            <div class="field">
+                <input type="submit" value="Sửa">
+            </div>
+            <div class="signup-link">
+                <a href="/NhanVien/AllNhanVien">Quay về</a>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

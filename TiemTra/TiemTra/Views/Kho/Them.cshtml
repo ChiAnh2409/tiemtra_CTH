@@ -1,0 +1,68 @@
+﻿@model TiemTra.ViewModel.MutipleData
+
+@{
+    ViewBag.Title = "Them";
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Thêm nguyên liệu</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Thêm nguyên liệu
+        </div>
+        <form method="post" action="Them">
+            <label>Tên nhà cung cấp</label>
+            <select id="disease-list" name="IdNhaCC">
+                @foreach (var item in Model.nhaCungCap)
+                {
+                    <option value="@item.IdNhaCC">@item.TenNhaCC</option>
+                }
+            </select>
+            <br />
+
+            <div class="field">
+                <input type="text" name="LoHang">
+                <label>Mã Lô Hàng</label>
+            </div>
+            <label>Tên nguyên liệu</label>
+            <select id="disease-list" name="TenNL">
+                @foreach (var item in Model.nguyenLieus)
+                {
+                    <option value="@item.IdNgL">@item.TenNL</option>
+                }
+            </select>
+            <div class="field">
+                <input type="text" name="DVT">
+                <label>Đơn vị tính</label>
+            </div>
+            <div class="field">
+                <input type="text" name="TonKho">
+                <label>Tồn kho</label>
+            </div>
+            <div class="field">
+                <input type="text" name="SoLuongTon">
+                <label>Số Lượng</label>
+            </div>
+            <div class="field">
+                <input type="date" name="HanSuDung">
+                <label>Hạn sử dụng</label>
+            </div>
+
+
+            <div class="field">
+                <input type="submit" value="Thêm">
+            </div>
+            <div class="signup-link">
+                <a href="/NguyenLieu/NguyenLieu">Quay về</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

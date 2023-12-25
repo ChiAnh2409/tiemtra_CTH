@@ -1,0 +1,40 @@
+﻿@model TiemTra.Models.NguyenLieu
+@{
+    ViewBag.Title = "SuaNL";
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sửa Size Thức Uống</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Sửa Nguyên Liệu
+        </div>
+        <form method="post" action="SuaNL">
+            <div class="field">
+                <input type="text" name="IdNgL" value="@Model.IdNgL" readonly>
+
+            </div>
+
+            <div class="field">
+                <input type="text" name="TenNL" value="@Model.TenNL">
+                <label>Tên Nguyên Liệu</label>
+            </div>
+
+
+            <div class="field">
+                <input type="submit" value="Sửa">
+            </div>
+            <div class="signup-link">
+                <a href="/NguyenLieu/NguyenLieu">Quay về</a>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

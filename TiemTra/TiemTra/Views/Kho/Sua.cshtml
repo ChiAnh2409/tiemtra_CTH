@@ -1,0 +1,81 @@
+﻿@model TiemTra.ViewModel.MutipleData
+@{
+    ViewBag.Title = "Sua";
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Thêm nguyên liệu</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Sửa đổi nguyên liệu
+        </div>
+        <form method="post" action="Sua">
+            @foreach (var item in Model.khoNguyenLieus)
+            {
+                <div class="field">
+                    <input type="text" name="IdNL" value="@item.IdNL" readonly>
+
+                </div>
+                <label>Tên nhà cung cấp</label>
+                <select id="disease-list" name="IdNhaCC">
+                    @foreach (var item2 in Model.nhaCungCap)
+                    {
+                        <option value="@item2.IdNhaCC" @(item2.IdNhaCC == item.IdNhaCC ? "selected" : "")>@item2.TenNhaCC</option>
+                    }
+                </select>
+                <div class="field">
+                    <input type="text" name="LoHang" value="@item.LoHang">
+                    <label>Mã Lô Hàng</label>
+                </div>
+                <label>Tên nguyên liệu</label>
+                <select id="disease-list" name="TenNL">
+                    @foreach (var item2 in Model.nguyenLieus)
+                    {
+                        <option value="@item2.IdNgL" @(item2.IdNgL == item.TenNL ? "selected" : "")>@item2.TenNL</option>
+                    }
+                </select>
+
+
+                <div class="field">
+                    <input type="text" name="DVT" value="@item.DVT">
+                    <label>Đơn vị tính</label>
+                </div>
+                <div class="field">
+                    <input type="number" name="TonKho" value="@item.TonKho">
+                    <label>Tồn kho</label>
+                </div>
+                <div class="field">
+                    <input type="number" name="SoLuongTon" value="@item.SoLuongTon" >
+                    <label>Số Lượng</label>
+                </div>
+                <div class="field">
+                    @if (@item.HanSuDung.HasValue)
+                    {
+                        <input type="date" name="HanSuDung" value="@item.HanSuDung.Value.ToString("yyyy-MM-dd")">
+                    }
+                    else
+                    {
+                        <input type="date" name="HanSuDung" />
+                    }
+                    <label>Hạn Sử Dụng</label>
+                </div>
+
+
+
+                <div class="field">
+                    <input type="submit" value="Sửa">
+                </div>
+                <div class="signup-link">
+                    <a href="/NguyenLieu/NguyenLieu">Quay về trang chủ</a>
+                </div>
+            }
+        </form>
+    </div>
+</body>
+</html>

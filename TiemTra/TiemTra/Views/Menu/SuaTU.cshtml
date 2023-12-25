@@ -1,0 +1,76 @@
+﻿@model TiemTra.ViewModel.MutipleData
+@{
+    ViewBag.Title = "SuaTU";
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sửa thức uống</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Sửa thông tin thức uống
+        </div>
+        <form method="post" action="SuaTU" enctype="multipart/form-data">
+
+            @foreach (var item in Model.thucUongs)
+            {
+                <div class="field">
+                    <input type="text" name="IdTU" value="@item.IdTU" readonly>
+                </div>
+                <div class="field">
+                    <input type="text" name="TenTU" value="@item.TenTU">
+                    <label>Tên Thức Uống</label>
+                </div>
+                <label>Tên Loại Thức Uống</label>
+                <select id="disease-list" name="IdLoai">
+                    @foreach (var item2 in Model.loaiThucUongs)
+                    {
+                        <option value="@item2.IdLoai" @(item2.IdLoai == item.IdLoai ? "selected" : "")>@item2.TenLoai</option>
+                    }
+
+                </select>
+                <label>Size</label>
+                <select id="disease-list" name="IdSize">
+                    @foreach (var item2 in Model.sizes)
+                    {
+                        <option value="@item2.IdSize" @(item2.IdSize == item.IdSize ? "selected" : "")>@item2.Size1</option>
+                    }
+                </select>
+                <div class="field">
+                    <input type="text" name="Gia" value="@string.Format("{0:#,##0}", item.Gia)">
+                    <label>Giá Thành</label>
+                </div>
+                <div class="field">
+                    @if (item.Date_update.HasValue)
+                    {
+                        <input type="date" name="Date_update" value="@item.Date_update.Value.ToString("yyyy-MM-dd")" />
+                    }
+                    else
+                    {
+                        <input type="date" name="Date_update" />
+                    }
+                    <label>Ngày Cập Nhật</label>
+                </div>
+                <br />
+                <div class="field-image" style=" text-align: center; border: solid cornflowerblue; border-radius: 25px; ">
+                    <label>Hình ảnh minh họa</label>
+                    <input type="file" name="Image" style="margin-left: 60px;">
+
+                </div>
+
+                <div class="field">
+                    <input type="submit" value="Sửa">
+                </div>
+                <div class="signup-link">
+                    <a href="/Menu/Menu">Quay về trang chủ</a>
+                </div>
+            }
+        </form>
+    </div>
+</body>
+</html>

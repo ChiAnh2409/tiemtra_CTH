@@ -1,0 +1,40 @@
+﻿@model TiemTra.Models.LoaiThucUong
+@{
+    ViewBag.Title = "SuaLoaiNguyenLieu";
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sửa Loại Thức Uống</title>
+
+    <link href="~/css/NguyenLieu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            Sửa Loại Thức Uống
+        </div>
+        <form method="post" action="SuaLoai">
+            <div class="field">
+                <input type="text" name="IdLoai" value="@Model.IdLoai" readonly>
+
+            </div>
+
+            <div class="field">
+                <input type="text" name="TenLoai" value="@Model.TenLoai">
+                <label>Tên Loại</label>
+            </div>
+
+
+            <div class="field">
+                <input type="submit" value="Sửa">
+            </div>
+            <div class="signup-link">
+                <a href="/Loai/Loai">Quay về</a>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

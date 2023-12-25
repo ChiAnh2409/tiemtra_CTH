@@ -1,0 +1,67 @@
+﻿/* Reset một số thuộc tính cho body và HTML */
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    background: lightpink;
+}
+
+/* Style cho form */
+#checkoutForm {
+    width: 500px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    background-color: white;
+}
+
+    #checkoutForm h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #checkoutForm label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 20px;
+    }
+
+    #checkoutForm input[type="text"],
+    #checkoutForm input[type="tel"],
+    #checkoutForm input[type="email"] {
+        width: calc(100% - 12px);
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    #checkoutForm input[type="submit"] {
+        width: 40%;
+        margin-left: 150px;
+        padding: 10px;
+        border: none;
+        border-radius: 20px;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+    }
+
+        #checkoutForm input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+.signup-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+    .signup-link a {
+        text-decoration: none;
+        color: #007bff;
+    }
